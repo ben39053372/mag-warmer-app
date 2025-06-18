@@ -2,8 +2,8 @@
 
 import { PermissionsAndroid, Platform } from "react-native";
 import * as ExpoDevice from "expo-device";
-import { use, useEffect } from "react";
-import { BleManager } from "react-native-ble-plx";
+import { use, useCallback, useEffect, useState } from "react";
+import { BleManager, Device } from "react-native-ble-plx";
 
 // create your own singleton class
 class BLEServiceInstance {
@@ -71,32 +71,80 @@ const requestPermissions = async () => {
   }
 };
 
-export const useBLE = () => {
-  const permissions = requestPermissions();
-
-  console.log({ permissions });
+export const useDevices = () => {
+  const [discoveredDevices, setDiscoveredDevices] = useState<Device[]>([]);
 
   useEffect(() => {
-    console.log("useBLE");
     const subscription = BLEService.manager.onStateChange((state) => {
       if (state === "PoweredOn") {
-        scanAndConnect();
-        subscription.remove();
+        BLEService.manager.startDeviceScan(null, null, (error, device) => {
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          if (device && !discoveredDevices.some((d) => d.id === device.id)) {
+            setDiscoveredDevices((d) => [...d, device]);
+            console.log("Discovered Devices: ", device.name || device.id);
+          }
+        });
+
+        setTimeout(() => {
+          BLEService.manager.stopDeviceScan();
+          console.log("Scan stopped.");
+        }, 1000);
       } else {
         console.log(state);
       }
     });
     return () => subscription.remove();
-  }, []);
+  });
+
+  return discoveredDevices;
 };
 
-function scanAndConnect() {
-  BLEService.manager.startDeviceScan(null, null, (error, device) => {
-    console.log("device");
-    console.log({ device });
-    if (error) {
-      console.error(error);
-      return;
-    }
-  });
-}
+// export const useBLE = () => {
+//   const permissions = requestPermissions();
+
+//   const [device, setDevice] = useState<Device | null>(null);
+
+//   console.log({ permissions });
+
+//   const scanAndConnect = useCallback(() => {
+//     BLEService.manager.startDeviceScan(null, null, (error, _device) => {
+//       if (error) {
+//         console.error(error);
+//         return;
+//       }
+//       console.log("device");
+//       console.log({ _device });
+//       setDevice(_device);
+//       BLEService.manager.stopDeviceScan();
+//     });
+//   }, [setDevice]);
+
+//   useEffect(() => {
+//     console.log("useBLE");
+//     const subscription = BLEService.manager.onStateChange((state) => {
+//       if (state === "PoweredOn") {
+//         // scanAndConnect();
+//         BLEService.manager.startDeviceScan(null, null, (error, _device) => {
+//           if (error) {
+//             console.error(error);
+//             return;
+//           }
+//           console.log("device");
+//           console.log({ _device });
+//           setDevice(_device);
+//           BLEService.manager.stopDeviceScan();
+//         });
+//         subscription.remove();
+//       } else {
+//         console.log(state);
+//       }
+//     });
+//     return () => subscription.remove();
+//   }, []);
+
+//   return device;
+// };

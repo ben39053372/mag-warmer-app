@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -9,12 +8,13 @@ import {
   View,
   Keyboard,
 } from "react-native";
-import { useBLE } from "./hooks/useBLE";
+import { useDevices } from "./hooks/useBLE";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useState } from "react";
 
 export default function App() {
-  // useBLE();
+  // const device = useBLE();
+  const devices = useDevices();
   const [battery, setBattery] = useState(90);
   const [targetTemp, setTargetTemp] = useState(40);
   const [magTemps, setMagTemps] = useState([25, 24, 23, 22]);
@@ -79,6 +79,7 @@ export default function App() {
             step={1}
           />
         </View>
+        <Text>{JSON.stringify(devices, null, 2)}</Text>
       </View>
     </SafeAreaView>
   );

@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.anonymous.mag-warmer</string>
+          <string>work.ben39053372.mag-warmer</string>
         </array>
       </dict>
       <dict>
@@ -52,6 +52,10 @@
     </dict>
     <key>NSBluetoothAlwaysUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to connect to bluetooth devices</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
     <key>UIBackgroundModes</key>
     <array>
       <string>bluetooth-central</string>

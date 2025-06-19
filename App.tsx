@@ -7,83 +7,222 @@ import {
   TouchableOpacity,
   View,
   Keyboard,
+  Modal,
+  ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { useDevices } from "./hooks/useBLE";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import type { BarcodeScanningResult } from "expo-camera";
 
 export default function App() {
-  // const device = useBLE();
-  const devices = useDevices();
-  const [battery, setBattery] = useState(90);
-  const [targetTemp, setTargetTemp] = useState(40);
-  const [magTemps, setMagTemps] = useState([25, 24, 23, 22]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <AnimatedCircularProgress
-          size={120}
-          width={15}
-          fill={battery}
-          tintColor="#00e0ff"
-          onAnimationComplete={() => console.log("onAnimationComplete")}
-          backgroundColor="#3d5875"
-          rotation={0}
-        >
-          {(fill: number) => <Text>Battery: {fill}</Text>}
-        </AnimatedCircularProgress>
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-          }}
-        >
-          {magTemps.map((temp, index) => {
-            return (
-              <View key={index} style={styles.gridItem}>
-                <View
-                  style={{
-                    backgroundColor: "#eee",
-                    margin: 8,
-                    borderRadius: 8,
-                    padding: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: 14,
-                  }}
-                >
-                  <Text>MAGAZINE {index}</Text>
-                  <Text style={{ fontSize: 20, fontWeight: "700" }}>
-                    {temp} °C
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ fontSize: 24 }}>Target Temp: </Text>
-          <NumberInput
-            value={targetTemp}
-            onChange={setTargetTemp}
-            min={30}
-            max={60}
-            step={1}
-          />
-        </View>
-        <Text>{JSON.stringify(devices, null, 2)}</Text>
-      </View>
+      <DeviceInfo />
     </SafeAreaView>
   );
 }
+
+export const ScanDeviceModal = ({
+  open,
+  onClose,
+  onScan,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onScan?: (data: string) => void;
+}) => {
+  const [scanning, setScanning] = useState(true);
+  const cameraRef = useRef(null);
+  const [permission, requestPermission] = useCameraPermissions();
+
+  useEffect(() => {
+    requestPermission();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }: BarcodeScanningResult) => {
+    if (scanning) {
+      setScanning(false);
+      console.log(
+        `Bar code with type ${type} and data ${data} has been scanned!`
+      );
+      if (onScan) {
+        const { deviceId }: { deviceId: string | undefined } = JSON.parse(data);
+        if (deviceId) {
+          onScan(deviceId);
+          setScanning(true);
+          onClose();
+        }
+      }
+    }
+  };
+
+  if (!permission) {
+    return (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={open}
+        onRequestClose={onClose}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ActivityIndicator size="large" color="#0000ff" />
+            <Text style={{ marginTop: 20 }}>
+              Requesting camera permission...
+            </Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  }
+
+  if (!permission.granted) {
+    return (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={open}
+        onRequestClose={onClose}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={{ marginBottom: 20 }}>No access to camera</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  }
+
+  return (
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={open}
+      onRequestClose={onClose}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <View style={styles.cameraContainer}>
+            <CameraView
+              ref={cameraRef}
+              style={styles.camera}
+              facing="back"
+              barcodeScannerSettings={{
+                barcodeTypes: ["qr"],
+              }}
+              onBarcodeScanned={scanning ? handleBarCodeScanned : undefined}
+            />
+            <View style={styles.scanOverlay}>
+              <View style={styles.scanFrame} />
+            </View>
+          </View>
+          <Text style={styles.scanText}>Scan QR Code</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.closeButtonText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
+export const DeviceInfo = () => {
+  const [battery, setBattery] = useState(90);
+  const [targetTemp, setTargetTemp] = useState(40);
+  const [magTemps, setMagTemps] = useState([25, 24, 23, 22]);
+  const [deviceId, setDeviceId] = useState<string>();
+  const [scanModalOpen, setScanModalOpen] = useState(false);
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.scanButton}
+        onPress={() => setScanModalOpen(true)}
+      >
+        <Text style={styles.scanButtonText}>Scan Device</Text>
+      </TouchableOpacity>
+
+      <Text>{deviceId}</Text>
+
+      <AnimatedCircularProgress
+        size={120}
+        width={15}
+        fill={battery}
+        tintColor="#00e0ff"
+        onAnimationComplete={() => console.log("onAnimationComplete")}
+        backgroundColor="#3d5875"
+        rotation={0}
+      >
+        {(fill: number) => <Text>Battery: {fill}</Text>}
+      </AnimatedCircularProgress>
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+        }}
+      >
+        {magTemps.map((temp, index) => {
+          return (
+            <View key={index} style={styles.gridItem}>
+              <View
+                style={{
+                  backgroundColor: "#eee",
+                  margin: 8,
+                  borderRadius: 8,
+                  padding: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 14,
+                }}
+              >
+                <Text>MAGAZINE {index}</Text>
+                <Text style={{ fontSize: 20, fontWeight: "700" }}>
+                  {temp} °C
+                </Text>
+              </View>
+            </View>
+          );
+        })}
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 24 }}>Target Temp: </Text>
+        <NumberInput
+          value={targetTemp}
+          onChange={setTargetTemp}
+          min={30}
+          max={60}
+          step={1}
+        />
+      </View>
+
+      <ScanDeviceModal
+        open={scanModalOpen}
+        onClose={() => setScanModalOpen(false)}
+        onScan={(data) => {
+          console.log("QR Code scanned:", data);
+          setDeviceId(data);
+        }}
+      />
+    </View>
+  );
+};
+
+const { width } = Dimensions.get("window");
+const CAMERA_SIZE = width * 0.8;
+const SCAN_FRAME_SIZE = CAMERA_SIZE * 0.7;
 
 const styles = StyleSheet.create({
   container: {
@@ -122,6 +261,82 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     backgroundColor: "#fff",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: CAMERA_SIZE + 40,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  cameraContainer: {
+    width: CAMERA_SIZE,
+    height: CAMERA_SIZE,
+    overflow: "hidden",
+    borderRadius: 10,
+    position: "relative",
+  },
+  camera: {
+    width: "100%",
+    height: "100%",
+  },
+  scanOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  scanFrame: {
+    width: SCAN_FRAME_SIZE,
+    height: SCAN_FRAME_SIZE,
+    borderWidth: 2,
+    borderColor: "#00e0ff",
+    borderRadius: 10,
+  },
+  scanText: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  closeButton: {
+    marginTop: 20,
+    backgroundColor: "#f0f0f0",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  closeButtonText: {
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  scanButton: {
+    backgroundColor: "#00e0ff",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginVertical: 20,
+  },
+  scanButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white",
   },
 });
 

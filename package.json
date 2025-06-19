@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "expo": "~53.0.11",
+    "expo-camera": "~16.1.8",
     "expo-dev-client": "~5.2.0",
     "expo-device": "~7.1.4",
     "expo-status-bar": "~2.2.3",

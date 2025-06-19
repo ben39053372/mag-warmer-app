@@ -85,7 +85,7 @@ export const useDevices = () => {
 
           if (device && !discoveredDevices.some((d) => d.id === device.id)) {
             setDiscoveredDevices((d) => [...d, device]);
-            console.log("Discovered Devices: ", device.name || device.id);
+            console.log("Discovered Devices: ", device.name, " | ", device.id);
           }
         });
 

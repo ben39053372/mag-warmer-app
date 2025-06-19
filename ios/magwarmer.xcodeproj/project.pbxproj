@@ -363,8 +363,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.anonymous.mag-warmer";
-				PRODUCT_NAME = magwarmer;
+				PRODUCT_BUNDLE_IDENTIFIER = "work.ben39053372.mag-warmer";
+				PRODUCT_NAME = "magwarmer";
 				SWIFT_OBJC_BRIDGING_HEADER = "magwarmer/magwarmer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -397,8 +397,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.anonymous.mag-warmer";
-				PRODUCT_NAME = magwarmer;
+				PRODUCT_BUNDLE_IDENTIFIER = "work.ben39053372.mag-warmer";
+				PRODUCT_NAME = "magwarmer";
 				SWIFT_OBJC_BRIDGING_HEADER = "magwarmer/magwarmer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

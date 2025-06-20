@@ -72,9 +72,13 @@ export const useScanAndConnectDevice = (deviceId?: string) => {
     console.log("scanAndConnect", { deviceId });
     if (deviceId)
       try {
-        const device = await BLEService.manager.connectToDevice(deviceId, {
-          timeout: 3000,
-        });
+        const device = await BLEService.manager
+          .connectToDevice(deviceId, {
+            timeout: 3000,
+          })
+          .then((d) => {
+            return d.discoverAllServicesAndCharacteristics();
+          });
         setDevice(device);
       } catch (error) {
         console.log(error);

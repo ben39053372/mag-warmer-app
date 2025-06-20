@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
-import { BleManager, Device } from "react-native-ble-plx";
+import { BleError, BleManager, Device } from "react-native-ble-plx";
 
 // create your own singleton class
 class BLEServiceInstance {
@@ -63,10 +63,31 @@ export const useBlePermission = () => {
   return { permission, requestPermission };
 };
 
+export const useCharacteristic = (
+  serviceID: string,
+  characteristicUUID: string,
+  device?: Device
+) => {
+  const [value, setValue] = useState<string | null>();
+  const [error, setError] = useState<BleError>();
+  useEffect(() => {
+    if (!device) return;
+    device
+      .readCharacteristicForService(serviceID, characteristicUUID)
+      .then((characteristic) => {
+        setValue(characteristic.value);
+      })
+      .catch((error) => setError(error));
+  }, [device, serviceID, characteristicUUID]);
+
+  return { value, error };
+};
+
 export const useScanAndConnectDevice = (deviceId?: string) => {
   console.log("call useScanAndConnectDevice");
   const [device, setDevice] = useState<Device>();
   const [error, setError] = useState();
+  const [connected, setConnected] = useState(false);
 
   const scanAndConnect = async () => {
     console.log("scanAndConnect", { deviceId });
@@ -74,14 +95,25 @@ export const useScanAndConnectDevice = (deviceId?: string) => {
       try {
         const device = await BLEService.manager
           .connectToDevice(deviceId, {
-            timeout: 3000,
+            timeout: 20000,
           })
           .then((d) => {
             return d.discoverAllServicesAndCharacteristics();
           });
+        device.onDisconnected((error, device) => {
+          setConnected(false);
+          if (error) {
+            console.error(JSON.stringify(error, null, 4));
+          }
+          if (device) {
+            device.connect().then(() => {
+              setConnected(true);
+            });
+          }
+        });
         setDevice(device);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
   };
   useEffect(() => {
@@ -98,7 +130,10 @@ export const useScanAndConnectDevice = (deviceId?: string) => {
         console.log("onStateChange: ", state);
       }
     }, true);
-    return () => sub.remove();
+    return () => {
+      sub.remove();
+      device?.cancelConnection();
+    };
   }, [deviceId, BLEService.manager]);
 
   return { device, error };

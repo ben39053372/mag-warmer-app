@@ -3,7 +3,11 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { ScanDeviceModal } from "./ScanDeviceModal";
 import { NumberInput } from "./NumberInput";
-import { useBlePermission, useScanAndConnectDevice } from "../services/ble";
+import {
+  useBlePermission,
+  useCharacteristic,
+  useScanAndConnectDevice,
+} from "../services/ble";
 
 export const DeviceInfo = () => {
   const [battery, setBattery] = useState(90);
@@ -28,6 +32,16 @@ export const DeviceInfo = () => {
   useEffect(() => {
     console.log({ device });
   }, [device]);
+
+  const { value, error: characteristicMonitorError } = useCharacteristic(
+    "2aae64b6-8f24-4643-9302-0ba146f8d9f2",
+    "c94b7467-2490-46a2-b5e7-6a16752e13d3",
+    device
+  );
+
+  useEffect(() => {
+    console.log({ value, characteristicMonitorError });
+  }, [value, characteristicMonitorError]);
 
   return (
     <View style={styles.container}>

@@ -75,7 +75,10 @@ export const useCharacteristic = (
     device
       .readCharacteristicForService(serviceID, characteristicUUID)
       .then((characteristic) => {
-        setValue(characteristic.value);
+        if (characteristic.value) {
+          const value = Buffer.from(characteristic.value, "base64").toString();
+          setValue(value);
+        }
       })
       .catch((error) => setError(error));
   }, [device, serviceID, characteristicUUID]);

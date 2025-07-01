@@ -71,16 +71,16 @@ export const useCharacteristic = (
   const [value, setValue] = useState<string | null>();
   const [error, setError] = useState<BleError>();
   useEffect(() => {
-    if (!device) return;
-    device
-      .readCharacteristicForService(serviceID, characteristicUUID)
-      .then((characteristic) => {
-        if (characteristic.value) {
-          const value = Buffer.from(characteristic.value, "base64").toString();
-          setValue(value);
-        }
-      })
-      .catch((error) => setError(error));
+    const interval = setInterval(() => {
+      if (!device) return;
+      device
+        .readCharacteristicForService(serviceID, characteristicUUID)
+        .then((characteristic) => {
+          setValue(characteristic.value);
+        })
+        .catch((error) => setError(error));
+    }, 5000);
+    return () => clearInterval(interval);
   }, [device, serviceID, characteristicUUID]);
 
   return { value, error };

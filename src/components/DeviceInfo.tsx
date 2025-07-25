@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { ScanDeviceModal } from "./ScanDeviceModal";
 import { NumberInput } from "./NumberInput";
+import { Buffer } from "buffer";
 import {
   useBlePermission,
   useCharacteristic,
@@ -10,12 +11,15 @@ import {
 } from "../services/ble";
 
 export const DeviceInfo = () => {
-  const [battery, setBattery] = useState(90);
   const [targetTemp, setTargetTemp] = useState(40);
-  const [magTemps, setMagTemps] = useState([25, 24, 23, 22]);
-  const [heaterStatus, setHeaterStatus] = useState([false, false]);
   const [deviceId, setDeviceId] = useState<string>();
   const [scanModalOpen, setScanModalOpen] = useState(false);
+
+  const handleTargetTempChange = async (temp: number) => {
+    setTargetTemp(temp);
+    await write(`targetTemp:${temp}`);
+    console.log("done");
+  };
 
   const { permission: BLEPermission, requestPermission: requestBLEPermission } =
     useBlePermission();
@@ -33,11 +37,35 @@ export const DeviceInfo = () => {
     console.log({ device });
   }, [device]);
 
+  const serviceUUID = "2aae64b6-8f24-4643-9302-0ba146f8d9f2";
+  const characteristicUUID = "c94b7467-2490-46a2-b5e7-6a16752e13d3";
+
   const { value, error: characteristicMonitorError } = useCharacteristic(
-    "2aae64b6-8f24-4643-9302-0ba146f8d9f2",
-    "c94b7467-2490-46a2-b5e7-6a16752e13d3",
+    serviceUUID,
+    characteristicUUID,
     device
   );
+
+  const write = async (value: string) => {
+    if (!device) {
+      console.warn("no device");
+      return;
+    }
+    console.log("send:", value);
+    console.log("base64: ", Buffer.from(value).toString("base64"));
+    await device
+      .writeCharacteristicWithResponseForService(
+        serviceUUID,
+        characteristicUUID,
+        Buffer.from(value).toString("base64")
+      )
+      .then(() => {
+        console.log("success send", value);
+      })
+      .catch((err) => {
+        console.error("send data error: ", err);
+      });
+  };
 
   useEffect(() => {
     console.log({ value, characteristicMonitorError });
@@ -61,13 +89,15 @@ export const DeviceInfo = () => {
       <AnimatedCircularProgress
         size={120}
         width={15}
-        fill={battery}
+        fill={((value?.["voltage"] || 0) / 12) * 100}
         tintColor="#00e0ff"
         onAnimationComplete={() => console.log("onAnimationComplete")}
         backgroundColor="#3d5875"
         rotation={0}
       >
-        {(fill: number) => <Text>Battery: {fill}</Text>}
+        {(fill: number) => (
+          <Text>Voltage: {value?.["voltage"].toFixed(2)}</Text>
+        )}
       </AnimatedCircularProgress>
 
       <View
@@ -78,7 +108,7 @@ export const DeviceInfo = () => {
           justifyContent: "space-between",
         }}
       >
-        {heaterStatus.map((isHeaterOn, index) => {
+        {value?.["heater"]?.map((isHeaterOn, index) => {
           return (
             <View
               key={index}
@@ -94,52 +124,24 @@ export const DeviceInfo = () => {
             >
               <Text>Heater {index}</Text>
               <Text>{isHeaterOn ? "ON" : "OFF"}</Text>
+              <Text>{value?.["temp"]?.filter((t) => t > 0)?.[index]}</Text>
             </View>
           );
         })}
       </View>
       <View
         style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-        }}
-      >
-        {magTemps.map((temp, index) => {
-          return (
-            <View key={index} style={styles.gridItem}>
-              <View
-                style={{
-                  backgroundColor: "#eee",
-                  margin: 8,
-                  borderRadius: 8,
-                  padding: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: 14,
-                }}
-              >
-                <Text>MAGAZINE {index}</Text>
-                <Text style={{ fontSize: 20, fontWeight: "700" }}>
-                  {temp} °C
-                </Text>
-              </View>
-            </View>
-          );
-        })}
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 24 }}>Target Temp: </Text>
+        <Text style={{ fontSize: 24 }}>
+          Target Temp: {value?.["targetTemp"]}
+        </Text>
         <NumberInput
-          value={targetTemp}
-          onChange={setTargetTemp}
+          value={targetTemp || 0}
+          onChange={handleTargetTempChange}
           min={30}
           max={60}
           step={1}

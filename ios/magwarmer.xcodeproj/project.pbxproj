@@ -7,27 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BC7F150A2E9E89B5BC7154E /* libPods-magwarmer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED77A5D2AD4C9F34CD73BBA4 /* libPods-magwarmer.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		32F971C4C68E2FE783C2AF34 /* libPods-magwarmer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 847CFBBB2FC009CDE7A1C08B /* libPods-magwarmer.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		D91107015E84ED7B839E1968 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 42EEB76E61DB0022B8F76634 /* PrivacyInfo.xcprivacy */; };
-		D9CD3266411764BC81AAEE16 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37D2E069F700604D311BE4F /* ExpoModulesProvider.swift */; };
+		CE9B17B1966608DA56495A1E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B025F750D3557019251C68A2 /* PrivacyInfo.xcprivacy */; };
+		DFC37C52C79D0F06BDBC216B /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0493D2A3A1A9792AB27376A2 /* ExpoModulesProvider.swift */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0493D2A3A1A9792AB27376A2 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-magwarmer/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* magwarmer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = magwarmer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = magwarmer/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = magwarmer/Info.plist; sourceTree = "<group>"; };
-		42EEB76E61DB0022B8F76634 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = magwarmer/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		481DFB4FF5BEB3002CD9D238 /* Pods-magwarmer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-magwarmer.release.xcconfig"; path = "Target Support Files/Pods-magwarmer/Pods-magwarmer.release.xcconfig"; sourceTree = "<group>"; };
-		847CFBBB2FC009CDE7A1C08B /* libPods-magwarmer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-magwarmer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D9B521A6BEE10C72D2A9A01 /* Pods-magwarmer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-magwarmer.debug.xcconfig"; path = "Target Support Files/Pods-magwarmer/Pods-magwarmer.debug.xcconfig"; sourceTree = "<group>"; };
+		7BD675C86AA84F67305411E7 /* Pods-magwarmer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-magwarmer.debug.xcconfig"; path = "Target Support Files/Pods-magwarmer/Pods-magwarmer.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = magwarmer/SplashScreen.storyboard; sourceTree = "<group>"; };
+		B025F750D3557019251C68A2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = magwarmer/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C37D2E069F700604D311BE4F /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-magwarmer/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		EC772E684B791B88D36A47DB /* Pods-magwarmer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-magwarmer.release.xcconfig"; path = "Target Support Files/Pods-magwarmer/Pods-magwarmer.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		ED77A5D2AD4C9F34CD73BBA4 /* libPods-magwarmer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-magwarmer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = magwarmer/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* magwarmer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "magwarmer-Bridging-Header.h"; path = "magwarmer/magwarmer-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -37,13 +37,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32F971C4C68E2FE783C2AF34 /* libPods-magwarmer.a in Frameworks */,
+				0BC7F150A2E9E89B5BC7154E /* libPods-magwarmer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D45FE9D3688DD55F6CEDF71 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7BD675C86AA84F67305411E7 /* Pods-magwarmer.debug.xcconfig */,
+				EC772E684B791B88D36A47DB /* Pods-magwarmer.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* magwarmer */ = {
 			isa = PBXGroup;
 			children = (
@@ -53,7 +63,15 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				42EEB76E61DB0022B8F76634 /* PrivacyInfo.xcprivacy */,
+				B025F750D3557019251C68A2 /* PrivacyInfo.xcprivacy */,
+			);
+			name = magwarmer;
+			sourceTree = "<group>";
+		};
+		1CBE6A6342909CF7EE0DEAB7 /* magwarmer */ = {
+			isa = PBXGroup;
+			children = (
+				0493D2A3A1A9792AB27376A2 /* ExpoModulesProvider.swift */,
 			);
 			name = magwarmer;
 			sourceTree = "<group>";
@@ -62,25 +80,9 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				847CFBBB2FC009CDE7A1C08B /* libPods-magwarmer.a */,
+				ED77A5D2AD4C9F34CD73BBA4 /* libPods-magwarmer.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		4CD607BB15588A573E17235F /* magwarmer */ = {
-			isa = PBXGroup;
-			children = (
-				C37D2E069F700604D311BE4F /* ExpoModulesProvider.swift */,
-			);
-			name = magwarmer;
-			sourceTree = "<group>";
-		};
-		77D23DA8E7962B59D5E9AB13 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				4CD607BB15588A573E17235F /* magwarmer */,
-			);
-			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -97,8 +99,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				A55E9647136E3A332E11F62D /* Pods */,
-				77D23DA8E7962B59D5E9AB13 /* ExpoModulesProviders */,
+				0D45FE9D3688DD55F6CEDF71 /* Pods */,
+				FCF586BDB446B352E0AA5457 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -113,16 +115,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A55E9647136E3A332E11F62D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				9D9B521A6BEE10C72D2A9A01 /* Pods-magwarmer.debug.xcconfig */,
-				481DFB4FF5BEB3002CD9D238 /* Pods-magwarmer.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +122,14 @@
 			);
 			name = Supporting;
 			path = magwarmer/Supporting;
+			sourceTree = "<group>";
+		};
+		FCF586BDB446B352E0AA5457 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				1CBE6A6342909CF7EE0DEAB7 /* magwarmer */,
+			);
+			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "magwarmer" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				8B4420E656637400E2B2AA0F /* [Expo] Configure project */,
+				AE18B4EE41E4A01291F2FC96 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				6B9BFE4FCF13D12E6DC31FAC /* [CP] Embed Pods Frameworks */,
+				DA4F5E28EE28F62B507E622D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -166,9 +166,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = YU2BDC4958;
 						LastSwiftMigration = 1250;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -198,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				D91107015E84ED7B839E1968 /* PrivacyInfo.xcprivacy in Resources */,
+				CE9B17B1966608DA56495A1E /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,24 +240,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6B9BFE4FCF13D12E6DC31FAC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-magwarmer/Pods-magwarmer-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-magwarmer/Pods-magwarmer-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -300,7 +280,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-magwarmer/Pods-magwarmer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8B4420E656637400E2B2AA0F /* [Expo] Configure project */ = {
+		AE18B4EE41E4A01291F2FC96 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -319,6 +299,24 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-magwarmer/expo-configure-project.sh\"\n";
 		};
+		DA4F5E28EE28F62B507E622D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-magwarmer/Pods-magwarmer-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-magwarmer/Pods-magwarmer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -327,7 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				D9CD3266411764BC81AAEE16 /* ExpoModulesProvider.swift in Sources */,
+				DFC37C52C79D0F06BDBC216B /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,13 +334,11 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D9B521A6BEE10C72D2A9A01 /* Pods-magwarmer.debug.xcconfig */;
+			baseConfigurationReference = 7BD675C86AA84F67305411E7 /* Pods-magwarmer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = magwarmer/magwarmer.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YU2BDC4958;
 				ENABLE_BITCODE = NO;
@@ -375,13 +371,11 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 481DFB4FF5BEB3002CD9D238 /* Pods-magwarmer.release.xcconfig */;
+			baseConfigurationReference = EC772E684B791B88D36A47DB /* Pods-magwarmer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = magwarmer/magwarmer.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YU2BDC4958;
 				INFOPLIST_FILE = magwarmer/Info.plist;

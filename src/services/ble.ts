@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
 import { BleError, BleManager, Device } from "react-native-ble-plx";
+import { Buffer } from "buffer";
 
 // create your own singleton class
 class BLEServiceInstance {
@@ -63,12 +64,20 @@ export const useBlePermission = () => {
   return { permission, requestPermission };
 };
 
+type DataFromBLE = {
+  heater: boolean[];
+  power: boolean;
+  targetTemp: number;
+  temp: number[];
+  voltage: number;
+};
+
 export const useCharacteristic = (
   serviceID: string,
   characteristicUUID: string,
   device?: Device
 ) => {
-  const [value, setValue] = useState<string | null>();
+  const [value, setValue] = useState<DataFromBLE | null>();
   const [error, setError] = useState<BleError>();
   useEffect(() => {
     const interval = setInterval(() => {
@@ -76,7 +85,11 @@ export const useCharacteristic = (
       device
         .readCharacteristicForService(serviceID, characteristicUUID)
         .then((characteristic) => {
-          setValue(characteristic.value);
+          setValue(
+            JSON.parse(
+              Buffer.from(characteristic.value || "", "base64").toString("utf8")
+            )
+          );
         })
         .catch((error) => setError(error));
     }, 5000);
@@ -96,6 +109,7 @@ export const useScanAndConnectDevice = (deviceId?: string) => {
     console.log("scanAndConnect", { deviceId });
     if (deviceId)
       try {
+        console.log(deviceId);
         const device = await BLEService.manager
           .connectToDevice(deviceId, {
             timeout: 20000,
@@ -139,5 +153,5 @@ export const useScanAndConnectDevice = (deviceId?: string) => {
     };
   }, [deviceId, BLEService.manager]);
 
-  return { device, error };
+  return { connected, device, error };
 };

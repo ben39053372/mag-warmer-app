@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    gap: 20,
   },
   scanButton: {
     backgroundColor: "#00e0ff",

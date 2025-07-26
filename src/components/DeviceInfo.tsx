@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { ScanDeviceModal } from "./ScanDeviceModal";
 import { NumberInput } from "./NumberInput";
@@ -14,11 +20,24 @@ export const DeviceInfo = () => {
   const [targetTemp, setTargetTemp] = useState(40);
   const [deviceId, setDeviceId] = useState<string>();
   const [scanModalOpen, setScanModalOpen] = useState(false);
+  const [heaterOff, setHeaterOff] = useState<boolean[]>([]);
 
   const handleTargetTempChange = async (temp: number) => {
     setTargetTemp(temp);
     await write(`targetTemp:${temp}`);
     console.log("done");
+  };
+
+  const handleHeaterChange = async (index: number) => {
+    if (!heaterOff[index]) {
+      await write(`heaterOFF:${index}`);
+    } else {
+      await write(`heaterON:${index}`);
+    }
+    setHeaterOff((arr) => {
+      arr[index] = !arr[index];
+      return arr;
+    });
   };
 
   const { permission: BLEPermission, requestPermission: requestBLEPermission } =
@@ -110,7 +129,8 @@ export const DeviceInfo = () => {
       >
         {value?.["heater"]?.map((isHeaterOn, index) => {
           return (
-            <View
+            <Pressable
+              onPress={() => handleHeaterChange(index)}
               key={index}
               style={{
                 backgroundColor: "#eee",
@@ -120,12 +140,13 @@ export const DeviceInfo = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 gap: 14,
+                opacity: heaterOff[index] ? 0.5 : 1,
               }}
             >
               <Text>Heater {index}</Text>
               <Text>{isHeaterOn ? "ON" : "OFF"}</Text>
               <Text>{value?.["temp"]?.filter((t) => t > 0)?.[index]}</Text>
-            </View>
+            </Pressable>
           );
         })}
       </View>

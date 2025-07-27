@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   Pressable,
+  Alert,
 } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { ScanDeviceModal } from "./ScanDeviceModal";
@@ -21,6 +22,7 @@ export const DeviceInfo = () => {
   const [deviceId, setDeviceId] = useState<string>();
   const [scanModalOpen, setScanModalOpen] = useState(false);
   const [heaterOff, setHeaterOff] = useState<boolean[]>([]);
+  const [powerOn, setPowerOn] = useState<boolean>(true);
 
   const handleTargetTempChange = async (temp: number) => {
     setTargetTemp(temp);
@@ -38,6 +40,15 @@ export const DeviceInfo = () => {
       arr[index] = !arr[index];
       return arr;
     });
+  };
+
+  const handlePowerOn = async () => {
+    if (powerOn) {
+      await write(`powerOFF`);
+    } else {
+      await write("powerON");
+    }
+    setPowerOn((on) => !on);
   };
 
   const { permission: BLEPermission, requestPermission: requestBLEPermission } =
@@ -68,6 +79,7 @@ export const DeviceInfo = () => {
   const write = async (value: string) => {
     if (!device) {
       console.warn("no device");
+      Alert.alert("No Device connected!");
       return;
     }
     console.log("send:", value);
@@ -91,7 +103,10 @@ export const DeviceInfo = () => {
   }, [value, characteristicMonitorError]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: 30 }]}>
+      <Text style={{ fontSize: 32, fontWeight: "800", color: "#555" }}>
+        Magazine Warmer
+      </Text>
       {/* Scan Device button */}
       <TouchableOpacity
         style={styles.scanButton}
@@ -105,68 +120,86 @@ export const DeviceInfo = () => {
 
       <Text>{device?.id}</Text>
 
-      <AnimatedCircularProgress
-        size={120}
-        width={15}
-        fill={((value?.["voltage"] || 0) / 12) * 100}
-        tintColor="#00e0ff"
-        onAnimationComplete={() => console.log("onAnimationComplete")}
-        backgroundColor="#3d5875"
-        rotation={0}
+      <View
+        pointerEvents={device ? "auto" : "none"}
+        style={[styles.container, !device && { opacity: 0.5 }]}
       >
-        {(fill: number) => (
-          <Text>Voltage: {value?.["voltage"].toFixed(2)}</Text>
-        )}
-      </AnimatedCircularProgress>
+        <AnimatedCircularProgress
+          size={120}
+          width={15}
+          fill={((value?.["voltage"] || 0) / 12) * 100}
+          tintColor="#00e0ff"
+          onAnimationComplete={() => console.log("onAnimationComplete")}
+          backgroundColor="#3d5875"
+          rotation={0}
+        >
+          {(fill: number) => (
+            <Text>Voltage: {value?.["voltage"].toFixed(2)}</Text>
+          )}
+        </AnimatedCircularProgress>
 
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-        }}
-      >
-        {value?.["heater"]?.map((isHeaterOn, index) => {
-          return (
-            <Pressable
-              onPress={() => handleHeaterChange(index)}
-              key={index}
-              style={{
-                backgroundColor: "#eee",
-                margin: 8,
-                borderRadius: 8,
-                padding: 20,
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 14,
-                opacity: heaterOff[index] ? 0.5 : 1,
-              }}
-            >
-              <Text>Heater {index}</Text>
-              <Text>{isHeaterOn ? "ON" : "OFF"}</Text>
-              <Text>{value?.["temp"]?.filter((t) => t > 0)?.[index]}</Text>
-            </Pressable>
-          );
-        })}
-      </View>
-      <View
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontSize: 24 }}>
-          Target Temp: {value?.["targetTemp"]}
-        </Text>
-        <NumberInput
-          value={targetTemp || 0}
-          onChange={handleTargetTempChange}
-          min={30}
-          max={60}
-          step={1}
-        />
+        <Pressable
+          style={{
+            backgroundColor: powerOn ? "#f33" : "#666",
+            padding: 18,
+            borderRadius: 8,
+          }}
+          onPress={handlePowerOn}
+        >
+          <Text style={{ fontWeight: "bold", fontSize: 18, color: "white" }}>
+            Power: {powerOn ? "ON" : "OFF"}
+          </Text>
+        </Pressable>
+
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+          }}
+        >
+          {value?.["heater"]?.map((isHeaterOn, index) => {
+            return (
+              <Pressable
+                onPress={() => handleHeaterChange(index)}
+                key={index}
+                style={{
+                  backgroundColor: "#eee",
+                  margin: 8,
+                  borderRadius: 8,
+                  padding: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 14,
+                  opacity: heaterOff[index] ? 0.5 : 1,
+                }}
+              >
+                <Text>Heater {index}</Text>
+                <Text>{isHeaterOn ? "ON" : "OFF"}</Text>
+                <Text>{value?.["temp"]?.filter((t) => t > 0)?.[index]}</Text>
+              </Pressable>
+            );
+          })}
+        </View>
+        <View
+          style={{
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 24 }}>
+            Target Temp: {value?.["targetTemp"]}
+          </Text>
+          <NumberInput
+            value={targetTemp || 0}
+            onChange={handleTargetTempChange}
+            min={30}
+            max={60}
+            step={1}
+          />
+        </View>
       </View>
 
       <ScanDeviceModal
@@ -185,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    gap: 20,
+    gap: 30,
   },
   scanButton: {
     backgroundColor: "#00e0ff",
